@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบจัดการการเรียนรู้ - โรงเรียนศรีเมืองวิทยาคาร</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&family=IBM+Plex+Sans+Thai:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <img src="https://img5.pic.in.th/file/secure-sv1/Logo-for-makeup-beauty-shop.gif" alt="School Logo">
+                <h1>โรงเรียนศรีเมืองวิทยาคาร</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#" data-section="dashboard">หน้าหลัก</a></li>
+                    <li><a href="#" data-section="assignments">งานค้าง</a></li>
+                    <li><a href="#" data-section="subjects">วิชาของฉัน</a></li>
+                    <li><a href="#" data-section="grades">คะแนนและเกรด</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="content-section active">
+            <h2>หน้าหลัก</h2>
+            <div class="dashboard-grid">
+                <div class="card">
+                    <h3>งานค้างทั้งหมด</h3>
+                    <p id="total-assignments">0</p>
+                </div>
+                <div class="card">
+                    <h3>งานที่ยังไม่เสร็จ</h3>
+                    <p id="pending-assignments">0</p>
+                </div>
+                <div class="card">
+                    <h3>วิชาที่ลงทะเบียน</h3>
+                    <p id="registered-subjects">0</p>
+                </div>
+                <div class="card">
+                    <h3>ค่าเฉลี่ยเกรด (GPA)</h3>
+                    <p id="gpa-display">N/A</p>
+                </div>
+            </div>
+            <div class="upcoming-assignments">
+                <h3>งานค้างที่กำลังจะถึง</h3>
+                <ul id="upcoming-assignments-list">
+                    <li>ไม่มีงานค้าง</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Assignments Section -->
+        <section id="assignments" class="content-section">
+            <h2>งานค้าง</h2>
+            <div class="form-container">
+                <h3>เพิ่มงานใหม่</h3>
+                <form id="assignment-form">
+                    <div class="form-group">
+                        <label for="assignment-subject">วิชา:</label>
+                        <select id="assignment-subject" required>
+                            <option value="">-- เลือกวิชา --</option>
+                            <!-- Options will be loaded by JavaScript -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="assignment-name">ชื่องาน:</label>
+                        <input type="text" id="assignment-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="assignment-due-date">กำหนดส่ง:</label>
+                        <input type="date" id="assignment-due-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="assignment-description">รายละเอียด:</label>
+                        <textarea id="assignment-description"></textarea>
+                    </div>
+                    <button type="submit" class="btn primary">เพิ่มงาน</button>
+                </form>
+            </div>
+
+            <h3>รายการงานค้าง</h3>
+            <ul id="assignments-list">
+                <!-- Assignments will be loaded by JavaScript -->
+                <li>ไม่มีงานค้าง</li>
+            </ul>
+        </section>
+
+        <!-- Subjects Section -->
+        <section id="subjects" class="content-section">
+            <h2>วิชาของฉัน</h2>
+            <h3>ลงทะเบียนวิชา</h3>
+            <div class="subject-selection">
+                <div id="available-subjects" class="subject-list">
+                    <h4>วิชาที่สามารถลงทะเบียนได้</h4>
+                    <!-- Available subjects will be loaded by JavaScript -->
+                </div>
+                <div id="selected-subjects" class="subject-list">
+                    <h4>วิชาที่ลงทะเบียนแล้ว</h4>
+                    <!-- Selected subjects will be loaded by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Grades Section -->
+        <section id="grades" class="content-section">
+            <h2>คะแนนและเกรด</h2>
+            <div class="grades-summary">
+                <h3>สรุปคะแนนและเกรด</h3>
+                <p><strong>ค่าเฉลี่ยเกรด (GPA):</strong> <span id="summary-gpa">N/A</span></p>
+                <div id="gpa-table-container">
+                    <!-- GPA Table will be loaded by JavaScript -->
+                </div>
+            </div>
+
+            <h3>บันทึกคะแนนรายวิชา</h3>
+            <div class="form-container">
+                <form id="score-form">
+                    <div class="form-group">
+                        <label for="score-subject">วิชา:</label>
+                        <select id="score-subject" required>
+                            <option value="">-- เลือกวิชาที่ลงทะเบียนแล้ว --</option>
+                            <!-- Options will be loaded by JavaScript from selected subjects -->
+                        </select>
+                    </div>
+                    <div id="score-inputs-container">
+                        <!-- Score input fields will be dynamically added here -->
+                        <div class="score-input-group">
+                            <label for="score-item-1">รายการคะแนน:</label>
+                            <input type="text" class="score-item-name" placeholder="เช่น กลางภาค" required>
+                            <label for="score-value-1">คะแนนที่ได้:</label>
+                            <input type="number" class="score-item-value" min="0" max="100" required>
+                            <button type="button" class="btn delete-score-item">X</button>
+                        </div>
+                    </div>
+                    <button type="button" class="btn secondary" id="add-score-item">เพิ่มรายการคะแนน</button>
+                    <button type="submit" class="btn primary">บันทึกคะแนน</button>
+                </form>
+            </div>
+
+            <h3>รายละเอียดคะแนนแต่ละวิชา</h3>
+            <div id="subject-grades-detail">
+                <!-- Detailed grades for each subject will be displayed here -->
+                <p>กรุณาเลือกวิชาและเพิ่มคะแนนเพื่อดูรายละเอียด</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 โรงเรียนศรีเมืองวิทยาคาร. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
