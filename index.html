@@ -3,158 +3,267 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบจัดการการเรียนรู้ - โรงเรียนศรีเมืองวิทยาคาร</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&family=IBM+Plex+Sans+Thai:wght@300;400;700&display=swap" rel="stylesheet">
+    <title>Srimuang 1/6 Hub - Modern App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    
+    <style>
+        :root {
+            --glass: rgba(255, 255, 255, 0.85);
+            --primary: #6366f1;
+            --secondary: #a855f7;
+            --accent: #ec4899;
+            --text: #1e293b;
+            --bg: #f8fafc;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', 'Kanit', sans-serif; }
+        
+        body { 
+            background: linear-gradient(135deg, #e0e7ff 0%, #f3e8ff 100%);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- Login Section --- */
+        #login-page {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .login-card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            padding: 40px 30px;
+            border-radius: 24px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            max-width: 400px;
+            width: 100%;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .logo-main {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+
+        .btn-google {
+            background: #fff;
+            color: #444;
+            border: 1px solid #ddd;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-bottom: 15px;
+        }
+
+        .btn-google:hover { background: #f1f1f1; transform: translateY(-2px); }
+
+        /* --- Main App UI --- */
+        #app-ui { display: none; flex-direction: column; flex: 1; }
+
+        nav {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .user-pill {
+            background: #fff;
+            padding: 5px 15px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            cursor: pointer;
+        }
+
+        .user-pill img { width: 30px; height: 30px; border-radius: 50%; }
+
+        .content { padding: 20px; flex: 1; max-width: 800px; margin: 0 auto; width: 100%; }
+
+        .card {
+            background: var(--glass);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+
+        /* --- Tabs & Navigation --- */
+        .bottom-nav {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 30px;
+            padding: 12px 30px;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .nav-item { color: #64748b; font-size: 20px; cursor: pointer; transition: 0.3s; }
+        .nav-item.active { color: var(--primary); transform: scale(1.2); }
+
+        /* --- Features UI --- */
+        .task-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #eee; }
+        .grade-input { width: 100%; border: none; background: #fff; padding: 12px; border-radius: 12px; margin-bottom: 10px; }
+        
+        /* Modal Popup */
+        dialog {
+            border: none;
+            border-radius: 24px;
+            padding: 30px;
+            margin: auto;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        dialog::backdrop { background: rgba(0,0,0,0.4); backdrop-filter: blur(5px); }
+
+        input, select { 
+            width: 100%; 
+            padding: 12px; 
+            margin: 8px 0; 
+            border-radius: 12px; 
+            border: 1px solid #e2e8f0;
+            outline: none;
+        }
+
+        .btn-action {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 700;
+            width: 100%;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div class="logo">
-                <img src="https://img5.pic.in.th/file/secure-sv1/Logo-for-makeup-beauty-shop.gif" alt="School Logo">
-                <h1>โรงเรียนศรีเมืองวิทยาคาร</h1>
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="#" data-section="dashboard">หน้าหลัก</a></li>
-                    <li><a href="#" data-section="assignments">งานค้าง</a></li>
-                    <li><a href="#" data-section="subjects">วิชาของฉัน</a></li>
-                    <li><a href="#" data-section="grades">คะแนนและเกรด</a></li>
-                </ul>
-            </nav>
+
+    <div id="login-page">
+        <div class="login-card">
+            <img src="https://img5.pic.in.th/file/secure-sv1/IMG_4348aa10cad205e09096.png" class="logo-main">
+            <h1 style="font-size: 24px; margin-bottom: 5px;">Srimuang Class 1/6</h1>
+            <p style="color: #64748b; margin-bottom: 30px;">ยินดีต้อนรับสู่ระบบจัดการตารางเรียน</p>
+            
+            <button class="btn-google" id="google-login">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18">
+                เข้าสู่ระบบด้วย Google
+            </button>
+
+            <div style="margin: 20px 0; color: #cbd5e1;">── หรือ ──</div>
+
+            <div id="recaptcha-container"></div>
+            <input type="text" id="phone-input" placeholder="+66 95XXXXXXX">
+            <button class="btn-action" style="background: #10b981;" id="phone-login">ยืนยันเบอร์โทรศัพท์</button>
         </div>
-    </header>
+    </div>
 
-    <main class="container">
-        <!-- Dashboard Section -->
-        <section id="dashboard" class="content-section active">
-            <h2>หน้าหลัก</h2>
-            <div class="dashboard-grid">
-                <div class="card">
-                    <h3>งานค้างทั้งหมด</h3>
-                    <p id="total-assignments">0</p>
-                </div>
-                <div class="card">
-                    <h3>งานที่ยังไม่เสร็จ</h3>
-                    <p id="pending-assignments">0</p>
-                </div>
-                <div class="card">
-                    <h3>วิชาที่ลงทะเบียน</h3>
-                    <p id="registered-subjects">0</p>
-                </div>
-                <div class="card">
-                    <h3>ค่าเฉลี่ยเกรด (GPA)</h3>
-                    <p id="gpa-display">N/A</p>
-                </div>
+    <div id="app-ui">
+        <nav>
+            <h2 style="font-weight: 700; color: var(--primary);">SMWK 1/6</h2>
+            <div class="user-pill" onclick="profileModal.showModal()">
+                <span id="user-name">Loading...</span>
+                <img id="user-pic" src="">
             </div>
-            <div class="upcoming-assignments">
-                <h3>งานค้างที่กำลังจะถึง</h3>
-                <ul id="upcoming-assignments-list">
-                    <li>ไม่มีงานค้าง</li>
-                </ul>
-            </div>
-        </section>
+        </nav>
 
-        <!-- Assignments Section -->
-        <section id="assignments" class="content-section">
-            <h2>งานค้าง</h2>
-            <div class="form-container">
-                <h3>เพิ่มงานใหม่</h3>
-                <form id="assignment-form">
-                    <div class="form-group">
-                        <label for="assignment-subject">วิชา:</label>
-                        <select id="assignment-subject" required>
-                            <option value="">-- เลือกวิชา --</option>
-                            <!-- Options will be loaded by JavaScript -->
+        <div class="content">
+            <section id="section-tasks" class="tab-view">
+                <div class="card">
+                    <h3>📋 งานที่ได้รับมอบหมาย</h3>
+                    <div style="margin: 15px 0;">
+                        <select id="task-subject">
+                            <option value="ค20212">ค20212 (ครูนิตานันท์)</option>
+                            <option value="ว21102">ว21102 (ครูวนิตา)</option>
+                            <option value="อ21102">อ21102 (ครูมุกดา)</option>
+                            <option value="ท21102">ท21102 (ครูปานหทัย)</option>
                         </select>
+                        <input type="text" id="task-desc" placeholder="เช่น การบ้านหน้า 50...">
+                        <button class="btn-action" onclick="addTask()">เพิ่มงานใหม่</button>
                     </div>
-                    <div class="form-group">
-                        <label for="assignment-name">ชื่องาน:</label>
-                        <input type="text" id="assignment-name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="assignment-due-date">กำหนดส่ง:</label>
-                        <input type="date" id="assignment-due-date" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="assignment-description">รายละเอียด:</label>
-                        <textarea id="assignment-description"></textarea>
-                    </div>
-                    <button type="submit" class="btn primary">เพิ่มงาน</button>
-                </form>
-            </div>
-
-            <h3>รายการงานค้าง</h3>
-            <ul id="assignments-list">
-                <!-- Assignments will be loaded by JavaScript -->
-                <li>ไม่มีงานค้าง</li>
-            </ul>
-        </section>
-
-        <!-- Subjects Section -->
-        <section id="subjects" class="content-section">
-            <h2>วิชาของฉัน</h2>
-            <h3>ลงทะเบียนวิชา</h3>
-            <div class="subject-selection">
-                <div id="available-subjects" class="subject-list">
-                    <h4>วิชาที่สามารถลงทะเบียนได้</h4>
-                    <!-- Available subjects will be loaded by JavaScript -->
+                    <div id="task-list-container"></div>
                 </div>
-                <div id="selected-subjects" class="subject-list">
-                    <h4>วิชาที่ลงทะเบียนแล้ว</h4>
-                    <!-- Selected subjects will be loaded by JavaScript -->
-                </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- Grades Section -->
-        <section id="grades" class="content-section">
-            <h2>คะแนนและเกรด</h2>
-            <div class="grades-summary">
-                <h3>สรุปคะแนนและเกรด</h3>
-                <p><strong>ค่าเฉลี่ยเกรด (GPA):</strong> <span id="summary-gpa">N/A</span></p>
-                <div id="gpa-table-container">
-                    <!-- GPA Table will be loaded by JavaScript -->
-                </div>
-            </div>
-
-            <h3>บันทึกคะแนนรายวิชา</h3>
-            <div class="form-container">
-                <form id="score-form">
-                    <div class="form-group">
-                        <label for="score-subject">วิชา:</label>
-                        <select id="score-subject" required>
-                            <option value="">-- เลือกวิชาที่ลงทะเบียนแล้ว --</option>
-                            <!-- Options will be loaded by JavaScript from selected subjects -->
-                        </select>
-                    </div>
-                    <div id="score-inputs-container">
-                        <!-- Score input fields will be dynamically added here -->
-                        <div class="score-input-group">
-                            <label for="score-item-1">รายการคะแนน:</label>
-                            <input type="text" class="score-item-name" placeholder="เช่น กลางภาค" required>
-                            <label for="score-value-1">คะแนนที่ได้:</label>
-                            <input type="number" class="score-item-value" min="0" max="100" required>
-                            <button type="button" class="btn delete-score-item">X</button>
+            <section id="section-grades" class="tab-view" style="display: none;">
+                <div class="card">
+                    <h3>📊 คำนวณเกรด (GPA)</h3>
+                    <p style="font-size: 14px; color: gray; margin-bottom: 15px;">อิงวิชาจากตารางเรียน ม.1/6</p>
+                    <div id="grade-list">
                         </div>
+                    <button class="btn-action" onclick="calcGPA()">คำนวณผลการเรียน</button>
+                    <div style="text-align: center; margin-top: 20px;">
+                        <span style="font-size: 14px;">เกรดเฉลี่ยที่คาดว่าจะได้:</span>
+                        <h1 id="gpa-display" style="color: var(--accent); font-size: 48px;">0.00</h1>
                     </div>
-                    <button type="button" class="btn secondary" id="add-score-item">เพิ่มรายการคะแนน</button>
-                    <button type="submit" class="btn primary">บันทึกคะแนน</button>
-                </form>
-            </div>
+                </div>
+            </section>
 
-            <h3>รายละเอียดคะแนนแต่ละวิชา</h3>
-            <div id="subject-grades-detail">
-                <!-- Detailed grades for each subject will be displayed here -->
-                <p>กรุณาเลือกวิชาและเพิ่มคะแนนเพื่อดูรายละเอียด</p>
-            </div>
-        </section>
-    </main>
+            <section id="section-chat" class="tab-view" style="display: none;">
+                <div class="card" style="height: 450px; display: flex; flex-direction: column;">
+                    <h3>💬 ห้องแชท ม.1/6</h3>
+                    <div id="chat-messages" style="flex: 1; overflow-y: auto; padding: 10px; background: #fff; border-radius: 12px; margin: 10px 0;"></div>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" id="chat-input" placeholder="พิมพ์ข้อความ...">
+                        <button class="btn-action" style="width: 80px; margin: 0;" id="send-btn">ส่ง</button>
+                    </div>
+                </div>
+            </section>
+        </div>
 
-    <footer>
-        <p>&copy; 2026 โรงเรียนศรีเมืองวิทยาคาร. All rights reserved.</p>
-    </footer>
+        <div class="bottom-nav">
+            <div class="nav-item active" onclick="showTab('tasks')">📋</div>
+            <div class="nav-item" onclick="showTab('grades')">📊</div>
+            <div class="nav-item" onclick="showTab('chat')">💬</div>
+        </div>
+    </div>
 
-    <script src="script.js"></script>
-</body>
-</html>
+    <dialog id="profileModal">
+        <h3 style="margin-bottom: 15px;">ตั้งค่าโปรไฟล์</h3>
+        <label>ชื่อที่แสดงในระบบ</label>
+        <input type="text" id="edit-name">
+        <label>URL รูปภาพโปรไฟล์</label>
+        <input type="text" id="edit-pic">
+        <button class="btn-action" onclick="saveProfile()">บันทึก</button>
+        <button class="btn-action" style="background: #ef4444; margin-top: 5px;" onclick="auth.signOut()">ออกจากระบบ</button>
+        <button style="background: none; border: none; color: gray; margin-top: 15px; width: 100%; cursor: pointer;" onclick="profileModal.close()">ปิดหน้าต่าง</button>
+    </dialog>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signInWithRedirect, GoogleAuthProvider, onAuthStateChanged, updateProfile, RecaptchaVerifier, signInWithPhoneNumber } from "
