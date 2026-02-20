@@ -2,101 +2,424 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Srimuang 1/6 Hub</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Srimuang 1/6 Hub - Modern App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    
+    <style>
+        :root {
+            --glass: rgba(255, 255, 255, 0.85);
+            --primary: #6366f1;
+            --secondary: #a855f7;
+            --accent: #ec4899;
+            --text: #1e293b;
+            --bg: #f8fafc;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', 'Kanit', sans-serif; }
+        
+        body { 
+            background: linear-gradient(135deg, #e0e7ff 0%, #f3e8ff 100%);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- Login Section --- */
+        #login-page {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .login-card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            padding: 40px 30px;
+            border-radius: 24px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            max-width: 400px;
+            width: 100%;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .logo-main {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+
+        .btn-google {
+            background: #fff;
+            color: #444;
+            border: 1px solid #ddd;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-bottom: 15px;
+        }
+
+        .btn-google:hover { background: #f1f1f1; transform: translateY(-2px); }
+
+        /* --- Main App UI --- */
+        #app-ui { display: none; flex-direction: column; flex: 1; }
+
+        nav {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .user-pill {
+            background: #fff;
+            padding: 5px 15px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            cursor: pointer;
+        }
+
+        .user-pill img { width: 30px; height: 30px; border-radius: 50%; }
+
+        .content { padding: 20px; flex: 1; max-width: 800px; margin: 0 auto; width: 100%; }
+
+        .card {
+            background: var(--glass);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+
+        /* --- Tabs & Navigation --- */
+        .bottom-nav {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 30px;
+            padding: 12px 30px;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .nav-item { color: #64748b; font-size: 20px; cursor: pointer; transition: 0.3s; }
+        .nav-item.active { color: var(--primary); transform: scale(1.2); }
+
+        /* --- Features UI --- */
+        .task-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #eee; }
+        .grade-input { width: 100%; border: none; background: #fff; padding: 12px; border-radius: 12px; margin-bottom: 10px; }
+        
+        /* Modal Popup */
+        dialog {
+            border: none;
+            border-radius: 24px;
+            padding: 30px;
+            margin: auto;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        dialog::backdrop { background: rgba(0,0,0,0.4); backdrop-filter: blur(5px); }
+
+        input, select { 
+            width: 100%; 
+            padding: 12px; 
+            margin: 8px 0; 
+            border-radius: 12px; 
+            border: 1px solid #e2e8f0;
+            outline: none;
+        }
+
+        .btn-action {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 700;
+            width: 100%;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
+
     <div id="login-page">
         <div class="login-card">
-            <img src="https://img5.pic.in.th/file/secure-sv1/IMG_4348aa10cad205e09096.png" class="logo">
-            <h1>Srimuang Class 1/6</h1>
-            <p>ระบบจัดการงานและคำนวณเกรด</p>
+            <img src="https://img5.pic.in.th/file/secure-sv1/IMG_4348aa10cad205e09096.png" class="logo-main" alt="Logo">
+            <h1 style="font-size: 24px; margin-bottom: 5px;">Srimuang Class 1/6</h1>
+            <p style="color: #64748b; margin-bottom: 30px;">ยินดีต้อนรับสู่ระบบจัดการตารางเรียน</p>
             
-            <div id="google-btn-container">
-                <button id="google-login-btn" class="btn-google">
-                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18">
-                    ล็อคอินด้วย Google
-                </button>
-            </div>
+            <button class="btn-google" id="google-login">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18" alt="Google">
+                เข้าสู่ระบบด้วย Google
+            </button>
 
-            <div class="divider">หรือ</div>
+            <div style="margin: 20px 0; color: #cbd5e1;">── หรือ ──</div>
 
-            <div id="phone-auth-ui">
-                <div id="recaptcha-container"></div>
-                <input type="tel" id="phone-number" placeholder="+66 951378403" value="+66951378403">
-                <button id="send-otp-btn" class="btn-primary">ส่งรหัส OTP</button>
-            </div>
+            <div id="recaptcha-container"></div>
+            <input type="text" id="phone-input" placeholder="+66 95XXXXXXX">
+            <button class="btn-action" style="background: #10b981;" id="phone-login">ยืนยันเบอร์โทรศัพท์</button>
         </div>
     </div>
 
-    <div id="app-ui" style="display: none;">
-        <nav class="top-nav">
-            <span class="brand">SMWK 1/6</span>
-            <div class="user-profile" id="profile-trigger">
-                <span id="display-name">Loading...</span>
-                <img id="display-pic" src="">
+    <div id="app-ui">
+        <nav>
+            <h2 style="font-weight: 700; color: var(--primary);">SMWK 1/6</h2>
+            <div class="user-pill" onclick="profileModal.showModal()">
+                <span id="user-name">Loading...</span>
+                <img id="user-pic" src="" alt="User">
             </div>
         </nav>
 
-        <main class="content-scroll">
-            <section id="tab-tasks" class="tab-content active">
+        <div class="content">
+            <section id="section-tasks" class="tab-view">
                 <div class="card">
-                    <h3>📋 งานค้างตามตารางเรียน</h3>
-                    <div class="input-group">
+                    <h3>📋 งานที่ได้รับมอบหมาย</h3>
+                    <div style="margin: 15px 0;">
                         <select id="task-subject">
-                            <option value="ค20212">ค20212 (คณิตศาสตร์)</option>
-                            <option value="ว21102">ว21102 (วิทยาศาสตร์)</option>
-                            <option value="ท21102">ท21102 (ภาษาไทย)</option>
-                            <option value="ส21103">ส21103 (สังคมศึกษา)</option>
+                            <option value="ค20212">ค20212 (ครูนิตานันท์)</option>
+                            <option value="ว21102">ว21102 (ครูวนิตา)</option>
+                            <option value="อ21102">อ21102 (ครูมุกดา)</option>
+                            <option value="ท21102">ท21102 (ครูปานหทัย)</option>
                         </select>
-                        <input type="text" id="task-input" placeholder="สั่งงานอะไรเพิ่ม...">
-                        <button id="add-task-btn" class="btn-primary">เพิ่มงาน</button>
+                        <input type="text" id="task-desc" placeholder="เช่น การบ้านหน้า 50...">
+                        <button class="btn-action" onclick="addTask()">เพิ่มงานใหม่</button>
                     </div>
-                    <ul id="task-list" class="list-view"></ul>
+                    <div id="task-list-container"></div>
                 </div>
             </section>
 
-            <section id="tab-grades" class="tab-content">
+            <section id="section-grades" class="tab-view" style="display: none;">
                 <div class="card">
-                    <h3>📊 คำนวณ GPA (ม.1/6)</h3>
-                    <div id="grade-inputs-container"></div>
-                    <button id="calc-gpa-btn" class="btn-primary">คำนวณเกรดเฉลี่ย</button>
-                    <div class="gpa-result">
-                        <small>GPA ที่คาดว่าจะได้</small>
-                        <h2 id="gpa-output">0.00</h2>
+                    <h3>📊 คำนวณเกรด (GPA)</h3>
+                    <p style="font-size: 14px; color: gray; margin-bottom: 15px;">อิงวิชาจากตารางเรียน ม.1/6</p>
+                    <div id="grade-list"></div>
+                    <button class="btn-action" onclick="calcGPA()">คำนวณผลการเรียน</button>
+                    <div style="text-align: center; margin-top: 20px;">
+                        <span style="font-size: 14px;">เกรดเฉลี่ยที่คาดว่าจะได้:</span>
+                        <h1 id="gpa-display" style="color: var(--accent); font-size: 48px;">0.00</h1>
                     </div>
                 </div>
             </section>
 
-            <section id="tab-chat" class="tab-content">
-                <div class="card chat-card">
-                    <h3>💬 ห้องแชทห้อง 128</h3>
-                    <div id="chat-box" class="chat-display"></div>
-                    <div class="chat-input-area">
-                        <input type="text" id="chat-msg" placeholder="คุยอะไรกันดี...">
-                        <button id="send-chat-btn">ส่ง</button>
+            <section id="section-chat" class="tab-view" style="display: none;">
+                <div class="card" style="height: 450px; display: flex; flex-direction: column;">
+                    <h3>💬 ห้องแชท ม.1/6</h3>
+                    <div id="chat-messages" style="flex: 1; overflow-y: auto; padding: 10px; background: #fff; border-radius: 12px; margin: 10px 0;"></div>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" id="chat-input" placeholder="พิมพ์ข้อความ...">
+                        <button class="btn-action" style="width: 80px; margin: 0;" id="send-btn">ส่ง</button>
                     </div>
                 </div>
             </section>
-        </main>
+        </div>
 
-        <nav class="bottom-nav">
-            <button class="nav-btn active" data-tab="tasks">📋<span>งาน</span></button>
-            <button class="nav-btn" data-tab="grades">📊<span>เกรด</span></button>
-            <button class="nav-btn" data-tab="chat">💬<span>แชท</span></button>
-        </nav>
+        <div class="bottom-nav">
+            <div class="nav-item active" onclick="showTab('tasks', event)">📋</div>
+            <div class="nav-item" onclick="showTab('grades', event)">📊</div>
+            <div class="nav-item" onclick="showTab('chat', event)">💬</div>
+        </div>
     </div>
 
-    <dialog id="profile-modal">
-        <div class="modal-body">
-            <h3>ตั้งค่าบัญชี</h3>
-            <button id="logout-btn" class="btn-danger">ออกจากระบบ</button>
-            <button id="close-modal">ปิด</button>
-        </div>
+    <dialog id="profileModal">
+        <h3 style="margin-bottom: 15px;">ตั้งค่าโปรไฟล์</h3>
+        <label>ชื่อที่แสดงในระบบ</label>
+        <input type="text" id="edit-name">
+        <label>URL รูปภาพโปรไฟล์</label>
+        <input type="text" id="edit-pic">
+        <button class="btn-action" onclick="saveProfile()">บันทึก</button>
+        <button class="btn-action" style="background: #ef4444; margin-top: 5px;" onclick="logout()">ออกจากระบบ</button>
+        <button style="background: none; border: none; color: gray; margin-top: 15px; width: 100%; cursor: pointer;" onclick="profileModal.close()">ปิดหน้าต่าง</button>
     </dialog>
 
-    <script type="module" src="app.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        // แก้ไข: นำเข้า signOut มาเพิ่ม
+        import { getAuth, signInWithRedirect, GoogleAuthProvider, onAuthStateChanged, updateProfile, RecaptchaVerifier, signInWithPhoneNumber, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getDatabase, ref, push, onChildAdded, set, onValue, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyB7Fl1Rx76SUj7ghBD3DyVEFaN00Db4RYk",
+            authDomain: "niopq-63e4e.firebaseapp.com",
+            projectId: "niopq-63e4e",
+            storageBucket: "niopq-63e4e.firebasestorage.app",
+            messagingSenderId: "916346045665",
+            appId: "1:916346045665:web:f569dc874af0ce9ba7a3a0",
+            databaseURL: "https://niopq-63e4e-default-rtdb.firebaseio.com/"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+        const provider = new GoogleAuthProvider();
+
+        const loginPage = document.getElementById('login-page');
+        const appUi = document.getElementById('app-ui');
+        const profileModal = document.getElementById('profileModal');
+
+        // 1. ตรวจสอบสถานะ User
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                loginPage.style.display = 'none';
+                appUi.style.display = 'flex';
+                document.getElementById('user-name').innerText = user.displayName || "นักเรียน 1/6";
+                document.getElementById('user-pic').src = user.photoURL || "https://img5.pic.in.th/file/secure-sv1/IMG_4348aa10cad205e09096.png";
+                // แก้ไข: ลบ initApp(user) ออก เพราะไม่ได้มีฟังก์ชันนี้เขียนไว้ ทำให้โค้ดพังเวลา Login
+            } else {
+                loginPage.style.display = 'flex';
+                appUi.style.display = 'none';
+            }
+        });
+
+        // 2. ล็อคอิน Google
+        document.getElementById('google-login').onclick = () => signInWithRedirect(auth, provider);
+
+        // 3. ยืนยันเบอร์โทร (Phone Auth)
+        try {
+            window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', { 'size': 'invisible' });
+            document.getElementById('phone-login').onclick = async () => {
+                const phone = document.getElementById('phone-input').value;
+                if (!phone) return alert("กรุณาใส่เบอร์โทรศัพท์");
+                try {
+                    const confirmationResult = await signInWithPhoneNumber(auth, phone, window.recaptchaVerifier);
+                    const code = prompt("ใส่รหัส OTP 6 หลัก:");
+                    if (code) await confirmationResult.confirm(code);
+                } catch (error) {
+                    console.error("Login Error:", error);
+                    alert("เกิดข้อผิดพลาดในการล็อคอิน: " + error.message);
+                }
+            };
+        } catch (error) {
+            console.error("Recaptcha Setup Error:", error);
+        }
+
+        // 4. ระบบงานค้าง
+        window.addTask = () => {
+            const subject = document.getElementById('task-subject').value;
+            const desc = document.getElementById('task-desc').value;
+            if(desc && auth.currentUser) push(ref(db, 'tasks'), { subject, desc, user: auth.currentUser.displayName || "ไม่ระบุชื่อ" });
+        };
+
+        onChildAdded(ref(db, 'tasks'), (snap) => {
+            const data = snap.val();
+            const div = document.createElement('div');
+            div.className = 'task-row';
+            div.innerHTML = `<span><b>${data.subject}</b>: ${data.desc}</span> <button style="color:red; border:none; background:none; cursor:pointer;" onclick="this.parentElement.remove()">ลบ</button>`;
+            document.getElementById('task-list-container').appendChild(div);
+        });
+
+        // 5. ระบบคำนวณเกรด
+        const subjects = [
+            {id: 'math', name: 'ค20212 คณิตศาสตร์', credit: 1.0},
+            {id: 'sci', name: 'ว21102 วิทยาศาสตร์', credit: 1.5},
+            {id: 'eng', name: 'อ21102 ภาษาอังกฤษ', credit: 1.0},
+            {id: 'thai', name: 'ท21102 ภาษาไทย', credit: 1.0},
+            {id: 'soc', name: 'ส21103 สังคมศึกษา', credit: 1.0}
+        ];
+
+        const gradeDiv = document.getElementById('grade-list');
+        subjects.forEach(s => {
+            gradeDiv.innerHTML += `
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:12px;">${s.name} (${s.credit} นก.)</label>
+                    <input type="number" class="score-input" data-credit="${s.credit}" placeholder="คะแนน 0-100">
+                </div>
+            `;
+        });
+
+        window.calcGPA = () => {
+            let totalPoint = 0;
+            let totalCredit = 0;
+            document.querySelectorAll('.score-input').forEach(input => {
+                const score = parseFloat(input.value) || 0;
+                const credit = parseFloat(input.dataset.credit);
+                let grade = 0;
+                if(score >= 80) grade = 4;
+                else if(score >= 75) grade = 3.5;
+                else if(score >= 70) grade = 3;
+                else if(score >= 65) grade = 2.5;
+                else if(score >= 60) grade = 2;
+                else if(score >= 55) grade = 1.5;
+                else if(score >= 50) grade = 1;
+                totalPoint += grade * credit;
+                totalCredit += credit;
+            });
+            const gpa = totalCredit > 0 ? (totalPoint / totalCredit).toFixed(2) : "0.00";
+            document.getElementById('gpa-display').innerText = gpa;
+        };
+
+        // 6. แชท
+        document.getElementById('send-btn').onclick = () => {
+            const msg = document.getElementById('chat-input').value;
+            if(msg && auth.currentUser) {
+                push(ref(db, 'chats'), { user: auth.currentUser.displayName || "ไม่ระบุชื่อ", text: msg });
+                document.getElementById('chat-input').value = '';
+            }
+        };
+
+        onChildAdded(ref(db, 'chats'), (snap) => {
+            const data = snap.val();
+            const div = document.createElement('div');
+            div.innerHTML = `<p style="font-size:14px; margin-bottom:5px;"><b>${data.user}:</b> ${data.text}</p>`;
+            const container = document.getElementById('chat-messages');
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+        });
+
+        // 7. Tabs Logic & Utils
+        // แก้ไข: รับค่า event เข้ามาเพื่อเปลี่ยนสถานะ active
+        window.showTab = (tab, event) => {
+            document.querySelectorAll('.tab-view').forEach(t => t.style.display = 'none');
+            document.getElementById('section-' + tab).style.display = 'block';
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            if(event) event.currentTarget.classList.add('active');
+        };
+
+        window.saveProfile = () => {
+            if(!auth.currentUser) return;
+            updateProfile(auth.currentUser, {
+                displayName: document.getElementById('edit-name').value,
+                photoURL: document.getElementById('edit-pic').value
+            }).then(() => location.reload());
+        };
+
+        // แก้ไข: สร้างฟังก์ชัน logout เพื่อให้ HTML เรียกใช้ได้
+        window.logout = () => {
+            signOut(auth).then(() => {
+                profileModal.close();
+            }).catch(err => console.error(err));
+        };
+    </script>
 </body>
 </html>
